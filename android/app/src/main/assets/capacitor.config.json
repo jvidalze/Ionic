@@ -1,0 +1,6 @@
+{
+	"appId": "com.newhorizons.ionicapp",
+	"appName": "Ionic App",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
