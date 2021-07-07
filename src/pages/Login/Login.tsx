@@ -19,10 +19,11 @@ const Login: React.FC = () => {
   const applicationContext = useContext(ApplicationContext);
   const refEmail = useRef<HTMLIonInputElement>(null);
   const refPassword = useRef<HTMLIonInputElement>(null);
+  
   const handleClickSignIn = async () => {
     const email = refEmail.current?.value as string;
     const password = refPassword.current?.value as string;
-
+    
     const userSignIn: User = {
       email: email,
       password: password,
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
     const resultSignIn: Result = await SignIn(userSignIn);
     if (resultSignIn.isAuthenticated) {
       Storage.set({ key: 'IS_AUTHENTICATED', value: 'true' });
+      Storage.set({ key: 'USUARIO', value:JSON.stringify(resultSignIn.data)});
       applicationContext.refreshAuthenticated();
     } else {
       console.log(resultSignIn.message);

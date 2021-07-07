@@ -25,8 +25,7 @@ const Menu: React.FC = () => {
     Storage.remove({ key: 'IS_AUTHENTICATED' });
     applicationContext.refreshAuthenticated();
   };
-
-  return (
+  return ( 
     <IonMenu contentId="main-app" side="end" type="overlay">
       <IonHeader>
         <IonToolbar>

@@ -14,21 +14,31 @@ import {
   IonIcon,
   IonFab,
   useIonViewWillEnter,
-} from '@ionic/react';
-import { camera } from 'ionicons/icons';
-import React, { useState } from 'react';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import './Profile.css';
-import { Storage } from '@capacitor/storage';
+} from "@ionic/react";
+import { camera } from "ionicons/icons";
+import React, { useRef, useState } from "react";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import "./Profile.css";
+import { Storage } from "@capacitor/storage";
 
 const Profile: React.FC = () => {
   const [photoUrl, setPhotoUrl] = useState<string | undefined>();
-
+  const [usuario, setUsuario] = useState<{
+    id: "";
+    firstName: "";
+    email: "";
+    lastName: "";
+    password: "";
+  }>();
+  const usuarioRef =
+    useRef<{ id: ""; firstName: ""; email: ""; lastName: ""; password: "" }>();
+  usuarioRef.current = usuario;
+  
   useIonViewWillEnter(async () => {
-    const { value } = await Storage.get({ key: 'LOOK_SLIDES' });
-    console.log(value);
+    let user = await (await Storage.get({ key: "USUARIO" })).value;
+    setUsuario(JSON.parse(user || "{}"));
+    console.log(usuarioRef.current);
   });
-
   const takePhoto = async () => {
     const cameraPhoto = await Camera.getPhoto({
       quality: 100,
@@ -59,13 +69,15 @@ const Profile: React.FC = () => {
                   alt="avatar"
                   src={
                     !photoUrl
-                      ? 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+                      ? "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
                       : photoUrl
                   }
                 />
               </IonAvatar>
-              <h1>Rick Sanchez</h1>
-              <h2>ricksanchez@gmail.com</h2>
+              <h1>
+                {`${usuarioRef.current?.firstName} ${usuarioRef.current?.lastName}`}{" "}
+              </h1>
+              <h2>{usuarioRef.current?.email}</h2>
             </IonCol>
           </IonRow>
         </IonGrid>
