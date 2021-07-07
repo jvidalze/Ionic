@@ -13,8 +13,10 @@ import {
   IonItem,
   IonMenuButton,
   IonPage,
+  IonProgressBar,
   IonRow,
   IonSkeletonText,
+  IonThumbnail,
   IonTitle,
   IonToolbar,
   useIonViewDidEnter,
@@ -49,7 +51,7 @@ const Home: React.FC = () => {
       const data = await result.json();
       const resultCharacters: Character[] = data.results;
       applicationContext.refreshCharacters(resultCharacters);
-    }, 1000);
+    }, 3000);
   };
   const handleClickPrevious = () => {
     setCount(count - 1);
@@ -67,7 +69,7 @@ const Home: React.FC = () => {
       const data = await result.json();
       const resultCharacters: Character[] = data.results;
       applicationContext.refreshCharacters(resultCharacters);
-    }, 1000);
+    }, 3000);
   };
   useIonViewDidEnter(() => {
     setTimeout(async () => {
@@ -80,8 +82,6 @@ const Home: React.FC = () => {
       const data = await result.json();
       const resultCharacters: Character[] = data.results;
       applicationContext.refreshCharacters(resultCharacters);
-
-      /**ACTUALIZANDO EL ESTADO */
     }, 3000);
   });
 
@@ -95,30 +95,26 @@ const Home: React.FC = () => {
           <IonTitle>Ionic App</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonHeader>
-        <IonItem>
-          <IonButton
-            class="ion-button"
-            fill="outline"
-            color="dark"
-            disabled={disableRef.current}
-            onClick={handleClickPrevious}
-          >
-            Atrás
-          </IonButton>
-          <IonButton
-            class="ion-button"
-            fill="outline"
-            color="dark"
-            onClick={handleClickNext}
-          >
-            Siguiente
-          </IonButton>
-        </IonItem>
-      </IonHeader>
+
       <IonContent>
         {applicationContext.characters.length === 0 ? (
           <IonGrid>
+            <IonProgressBar
+              class="bar"
+              type="indeterminate"
+              color="dark"
+            ></IonProgressBar>
+            <IonHeader>
+              <IonItem>
+                <IonButton class="ion-button" fill="outline" color="light">
+                  <IonSkeletonText animated style={{ width: "100%" }} />
+                </IonButton>
+                <IonButton class="ion-button" fill="outline" color="light">
+                  <IonSkeletonText animated style={{ width: "100%" }} />
+                </IonButton>
+              </IonItem>
+            </IonHeader>
+
             <IonRow>
               <IonCol className="ion-text-center">
                 <IonCard>
@@ -160,6 +156,30 @@ const Home: React.FC = () => {
           </IonGrid>
         ) : (
           <IonGrid>
+            <IonHeader
+              style={{ position: "fixed", top: "55px", width: "100%" }}
+            >
+              <IonItem>
+                <IonButton
+                  class="ion-button"
+                  fill="outline"
+                  color="dark"
+                  disabled={disableRef.current}
+                  onClick={handleClickPrevious}
+                >
+                  Atrás
+                </IonButton>
+                <IonButton
+                  class="ion-button"
+                  fill="outline"
+                  color="dark"
+                  onClick={handleClickNext}
+                >
+                  Siguiente
+                </IonButton>
+              </IonItem>
+            </IonHeader>
+            <IonThumbnail style={{ paddingTop: "85px" }}></IonThumbnail>
             {applicationContext.characters.map((item) => (
               <IonRow key={item.id}>
                 <IonCol className="ion-text-center">
